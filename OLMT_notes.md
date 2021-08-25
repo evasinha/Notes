@@ -102,14 +102,12 @@ The extra spaces between 36 and python is not a mistake (I was getting error mes
 
 
 ### Adding new sites
-Note that new sites can be added by creating entries in site data files:
+Note that new sites (see file locations below) can be added by creating entries in site data files:
 ```
 CropUQ_sitedata.txt    (location, years of data)
 CropUQ_soildata.txt    (soil texture information)
 CropUQ_pftdata.txt     (PFT information)
 ```
-location on compy: `/compyfs/inputdata/lnd/clm2/PTCLM/`
-location on anvil: `/lcrc/group/acme/ccsm-data/inputdata/lnd/clm2/PTCLM/`
 
 * CASE directory is created in: `~/wrk/E3SM_SFA/E3SM/cime/scripts/20200428_soybean_US-Bo1_I1850CLM45CNCROP_ad_spinup`
 * CASE exeroot is created in: `/compyfs/sinh210/e3sm_scratch/20200428_soybean_US-Bo1_I1850CLM45CNCROP_ad_spinup/bld`
@@ -128,10 +126,20 @@ sbatch --dependency=afterok:459040 scripts/20210615_corn_soybean/ensemble_run_20
 ```
 	
 
-### Surface and paramater file locations
-* Anvil::
-	* Surface data file - `/lcrc/group/acme/ccsm-data/inputdata/lnd/clm2/surfdata_map/` 
-	* Parameter data file - `/lcrc/group/acme/ccsm-data/inputdata/lnd/clm2/paramdata/`
+### Director and file locations
+* Anvil:
+	* Surface data file   - `/lcrc/group/e3sm/ccsm-data/inputdata/lnd/clm2/surfdata_map/` 
+	* Parameter data file - `/lcrc/group/e3sm/ccsm-data/inputdata/lnd/clm2/paramdata/`
+	* Site data files     - `/lcrc/group/e3sm/ccsm-data/inputdata/lnd/clm2/PTCLM/`
+	* Public input files  - `/lcrc/group/acme/public_html/inputdata`
+	* Scratch             - `/lcrc/group/e3sm/userid/scratch/anvil`
+	* CASE directory      - `/gpfs/fs1/home/userid/OLMT/cime_case_dirs/`
+	* CASE exeroot/rundir - `/lcrc/group/acme/userid/`
+	* CASE outputs        - `/lcrc/group/acme/userid/UQ/CASEID`
+* Compy:
+	* Surface data file   - `/compyfs/inputdata/lnd/clm2/surfdata_map`
+	* Parameter data file - `/compyfs/inputdata/lnd/clm2/paramdata`
+	* Site data files     - `/compyfs/inputdata/lnd/clm2/PTCLM/`
 
 
 ### Dynamic surface data set creation using SiteID\_dynpftdata.txt file
