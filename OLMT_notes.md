@@ -25,8 +25,8 @@ python site_fullrun.py
 --nyears_final_spinup 200         # base no. of years for final spinup
 --tstep 1                         # CLM timestep (hours)
 --cpl_bypass                      # Bypass coupler is OFF
---machine compy                   # machine to use
---model_root ~/wrk/E3SM_SFA/E3SM  # base E3SM directory
+--machine anvil                   # machine to use
+--model_root ~/E3SM               # base E3SM directory
 --nopftdyn                        # Do not use dynamic PFT file
 --gswp3                           # Use GSWP3 meteorology
 --ng 720                          # number of groups to run in ensemble mode
@@ -74,9 +74,24 @@ srun -n 36   python manage_ensemble.py \
 The extra spaces between 36 and python is not a mistake (I was getting error message without the extra space).
 
 
+### OLMT job with dynamic pft
+```
+python site_fullrun.py --site ${SITE} --crop --caseidprefix ${CASEID} \
+--nyears_ad_spinup 200 --nyears_final_spinup 200 --tstep 1 --cpl_bypass \
+--machine anvil --model_root ~/E3SM --gswp3 \
+--ng 400 --parm_list ${PARM_FILE} --sitegroup ${SITEGROUP} \
+--mc_ensemble ${NSAMPLES} --postproc_file postproc_vars_crop
+```
+Note that `--nopftdyn` option is not used in the command above.
+
+
 ### Notes about OLMT:
 * `parm_list` file lists input parameter and their ranges (ex. `parm_list_cropUQ`).
 * The `parm_list` file is used to create `Nxd` samples file, where `d` is the number of parameters and `N` is the number of desired samples to run.
+* In the `parm_list` file:
+	* If the parameter is not PFT-specific of if you want to use the same number for all PFTs, enter 0 for PFT number. 
+	* The same parameter name could appear multiple times in this file for different PFTs. 
+	* Names much match the netcdf parameter file exactly.
 * Python scripts are used to create site-specific surface and domain data, and to create, configure, build and submit the relevant cases.
 	* Script for creating surface and domain data - `makepointdata.py`. 
 	* Surface data domain data file created in `temp/` folder.  
