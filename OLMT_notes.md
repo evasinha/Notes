@@ -1,76 +1,22 @@
 # Running OLMT
 
-[ELM-crop uncertainty analysis](https://docs.google.com/document/d/1fBuvgCtB5vBeupfS9FJaxWth4N7e4sp-INebl5W-Y0A/edit) 
+### Helpful weblinks
+* [ELM-crop uncertainty analysis](https://docs.google.com/document/d/1fBuvgCtB5vBeupfS9FJaxWth4N7e4sp-INebl5W-Y0A/edit) 
 
-[Confluence page](https://acme-climate.atlassian.net/wiki/spaces/LND/pages/56033372/Running+ALM+offline+single+point+global+and+ensemble+capabilities)
-
-[Parametric Uncertainty Quantification Framework (with UQTK v 2.2)](https://acme-climate.atlassian.net/wiki/spaces/LND/pages/73793759/Parametric+Uncertainty+Quantification+Framework+with+UQTK+v+2.2)
-
-### OLMT fork download
-git clone git@github.com:evasinha/OLMT.git
+* [Confluence page](https://acme-climate.atlassian.net/wiki/spaces/LND/pages/56033372/Running+ALM+offline+single+point+global+and+ensemble+capabilities)
 
 
-### Notes about OLMT:
-
-* A list of parameter and their ranges are used. Ex. `parm_list_cropUQ`.
-* This file is used to `Nxd` samples file, where `d` is the number of parameters and `N` is the number of desired samples to run.
-* Python scripts are used to create site-specific surface and domain data, and to create, configure, build and submit the relevant cases.
-	* Script for creating surface and domain data - `makepointdata.py`. 
-	* Surface data domain data file created in `temp/` folder.  
-* The coupler bypass crop compset (`ICBCLM45CNCROP`) does not exist in the default ELM directory. Make sure to follow steps in the doc file for copying `config_compsets.xml` and `config_machines.xml` to respective directory in ELM folder.
-
-### Running jobs in batch
-* OLMT runs the ad\_spin case, followed by final\_spinup, and trans run by submitting jobs using dependency option.
-
-```
-sbatch scripts/20210615_corn_soybean/ensemble_run_20210615_corn_soybean_US-UiC_ICBELMCNCROP_ad_spinup.pbs > temp/jobinfo
-sbatch --dependency=afterok:459039 scripts/20210615_corn_soybean/ensemble_run_20210615_corn_soybean_US-UiC_ICBELMCNCROP.pbs > temp/jobinfo
-sbatch --dependency=afterok:459040 scripts/20210615_corn_soybean/ensemble_run_20210615_corn_soybean_US-UiC_ICBELMCNCROP_trans.pbs > temp/jobinfo
-```
-	
-### Post-processing for ensemble runs:
-* The postproc_vars file (`20200428_soybean_USpostproc_vars_crop`) lists the variables for which the post processing is performed as well as the period over which the variables should be averaged. The post processing is only applied to the transient case in the full run.
-* The post-processed output file (`20200428_soybean_US-Bo1_ICBCLM45CNCROP_trans_postprocessed.txt`) contains `n*m` matrix of outputs where n is the number of post processing variables listed in postproc_vars file and m is the number of samples in the ensemble.
-* `ytrain.dat` has the 80% of the post-processed output file data and `yval.dat` has the remaining 20%.
-* `ptrain.dat` has the 80% of the input parameter data and `pval.dat` has the remaining 20%.
-* `foreden.csv` has combined  input parameter (`ptrain.dat` + `pval.dat`) and  output file data (`ytrain.dat` + `yval.dat`) data  (horizontally combined).
+### Useful git commands
+* Clone OLMT fork: `git clone git@github.com:evasinha/OLMT.git`
+* Updating remote: `git remote set-url origin git@github.com:evasinha/OLMT`
 
 
-Steps that only need to be done once to set up the code and environment:
-
-```
-cd ~/wrk/E3SM_SFA/E3SM
-cp /qfs/people/ricc364/models/ELM_crop/E3SM/components/clm/cime_config/config_compsets.xml ./components/clm/cime_config/
-cp /qfs/people/ricc364/models/clean/E3SM/cime/config/e3sm/machines/config_machines.xml ./cime_config/machines/. 
-conda create --name myenv
-source activate myenv
-conda install netcdf4
-conda install mpi4py
-cd ~/wrk/E3SM_SFA
-git clone https://github.com/dmricciuto/OLMT.git
-cd OLMT
-git checkout cropuq ### DON't DO STAY ON MASTER
-```
-
-
-Steps to be performed each time a new ensemble is run:
-
-```
-cd ~/wrk/E3SM_SFA/OLMT
-module load nco
-module load anaconda2
-source /share/apps/anaconda2/2019.03/etc/profile.d/conda.sh
-source activate myenv
-unset PYTHONHOME
-```
-
-
+### Submitting job using OLMT
 ```
 python site_fullrun.py  --site US-Bo1 --crop --caseidprefix 20200428_soybean --nyears_ad_spinup 200 --nyears_final_spinup 200 --tstep 1 --cpl_bypass --machine compy --model_root ~/wrk/E3SM_SFA/E3SM --nopftdyn --gswp3 --ng 720 --parm_list parm_list_cropUQ --sitegroup CropUQ --ensemble_file mcsamples_cropUQ_soybean_2000x18.txt --postproc_file postproc_vars_crop
 ```
 
 Above line but with comments explaining each option:
-
 ```
 python site_fullrun.py 
 --site US-Bo1                     # 6-character fluxnet site name
@@ -90,15 +36,43 @@ python site_fullrun.py
 --ensemble_file mcsamples_cropUQ_soybean_2000x18.txt  # Parameter sample file to generate ensemble
 --postproc_file postproc_vars_crop                    # File for ensemble post processing
 ```
-               
-Note that new sites can be added by creating entries in these three files:
 
+### Notes about OLMT:
+* `parm_list` file lists input parameter and their ranges (ex. `parm_list_cropUQ`).
+* The `parm_list` file is used to create `Nxd` samples file, where `d` is the number of parameters and `N` is the number of desired samples to run.
+* Python scripts are used to create site-specific surface and domain data, and to create, configure, build and submit the relevant cases.
+	* Script for creating surface and domain data - `makepointdata.py`. 
+	* Surface data domain data file created in `temp/` folder.  
+* The coupler bypass crop compset (`ICBELMCNCROP`) does not exist in the default ELM directory. Follow the steps for copying `config_compsets.xml` and `config_machines.xml` to respective directory in ELM folder:
+	* Compy:
+	```
+	cp /qfs/people/ricc364/models/ELM_crop/E3SM/components/clm/cime_config/config_compsets.xml ./components/clm/cime_config/
+	cp /qfs/people/ricc364/models/clean/E3SM/cime/config/e3sm/machines/config_machines.xml ./cime_config/machines/
+	```
+	* Anvil:
+	```
+	cp /home/ac.ricciuto/models/ELM_crop/E3SM/components/clm/cime_config/config_compsets.xml ./components/clm/cime_config/
+	cp /home/ac.ricciuto/models/ELM_crop/E3SM/cime/config/e3sm/machines/config_machines.xml ./cime_config/machines/
+	```
+	
+### Post-processing for ensemble runs:
+* The postproc_vars file (`20200428_soybean_USpostproc_vars_crop`) lists the variables for which the post processing is performed as well as the period over which the variables should be averaged. 
+* The post processing is only applied to the transient case in the full run.
+* The post-processed output file (`20200428_soybean_US-Bo1_ICBCLM45CNCROP_trans_postprocessed.txt`) contains `n*m` matrix of outputs where n is the number of post processing variables listed in postproc_vars file and m is the number of samples in the ensemble.
+* `ytrain.dat` has the 80% of the post-processed output file data and `yval.dat` has the remaining 20%.
+* `ptrain.dat` has the 80% of the input parameter data and `pval.dat` has the remaining 20%.
+* `foreden.csv` has combined  input parameter (`ptrain.dat` + `pval.dat`) and  output file data (`ytrain.dat` + `yval.dat`) data  (horizontally combined).
+
+
+### Adding new sites
+Note that new sites can be added by creating entries in site data files:
 ```
 CropUQ_sitedata.txt    (location, years of data)
 CropUQ_soildata.txt    (soil texture information)
 CropUQ_pftdata.txt     (PFT information)
 ```
-located in `/compyfs/inputdata/lnd/clm2/PTCLM/` OR `/lcrc/group/acme/ccsm-data/inputdata/lnd/clm2/PTCLM/`.
+location on compy: `/compyfs/inputdata/lnd/clm2/PTCLM/`
+location on anvil: `/lcrc/group/acme/ccsm-data/inputdata/lnd/clm2/PTCLM/`
 
 * CASE directory is created in: `~/wrk/E3SM_SFA/E3SM/cime/scripts/20200428_soybean_US-Bo1_I1850CLM45CNCROP_ad_spinup`
 * CASE exeroot is created in: `/compyfs/sinh210/e3sm_scratch/20200428_soybean_US-Bo1_I1850CLM45CNCROP_ad_spinup/bld`
@@ -107,13 +81,14 @@ located in `/compyfs/inputdata/lnd/clm2/PTCLM/` OR `/lcrc/group/acme/ccsm-data/i
 * Output will be located here: `~/wrk/E3SM_SFA/OLMT/UQ_output/<case>` 
 
 
-* Testing single simulation with no Uncertainty Quantification:
+### Testing single simulation with no Uncertainty Quantification:
 
 ```
 python site_fullrun.py --site US-Bo1 --crop --caseidprefix 20200428_soybean_singlerun --nyears_ad_spinup 200 --nyears_final_spinup 200 --tstep 1 --cpl_bypass --machine compy --model_root ~/wrk/E3SM_SFA/E3SM --nopftdyn --gswp3 --sitegroup CropUQ
 ```
 
-If ensemble file does not exist it can be generated by using option `mc_ensemble`:
+### Generating parameter sample file to generate ensemble
+If parameter sample file file does not exist it can be generated by using option `mc_ensemble`:
 
 ```python site_fullrun.py --site US-Ur1 --crop --caseidprefix 20201229_miscanthus --nyears_ad_spinup 200 --nyears_final_spinup 200 --tstep 1 --cpl_bypass --machine anvil --model_root ~/E3SM --nopftdyn --gswp3 --ng 400 --parm_list parm_list_miscanthus --sitegroup CropUQ --mc_ensemble 2000 --postproc_file postproc_vars_crop```
 
@@ -135,21 +110,18 @@ srun -n 36   python manage_ensemble.py \
 --postproc_file postproc_vars_crop \
 --model_name elm
 ```
-
 The extra spaces between 36 and python is not a mistake (I was getting error message without the extra space).
 
 
-### Fork OLMT:
-`git remote add origin git@github.com:evasinha/OLMT`
+### Running jobs in batch
+* OLMT runs the aceelerated spin case, final spinup, and transient run by submitting jobs using dependency option. Example
 
-### For updating remote
 ```
-git remote set-url origin git@github.com:evasinha/e3sm_misc_scripts
-git remote set-url origin git@github.com:evasinha/UQTk
+sbatch scripts/20210615_corn_soybean/ensemble_run_20210615_corn_soybean_US-UiC_ICBELMCNCROP_ad_spinup.pbs > temp/jobinfo
+sbatch --dependency=afterok:459039 scripts/20210615_corn_soybean/ensemble_run_20210615_corn_soybean_US-UiC_ICBELMCNCROP.pbs > temp/jobinfo
+sbatch --dependency=afterok:459040 scripts/20210615_corn_soybean/ensemble_run_20210615_corn_soybean_US-UiC_ICBELMCNCROP_trans.pbs > temp/jobinfo
 ```
-
-
-git clone git@github.com:evasinha/ELM-Bioenergy
+	
 
 ### Surface and paramater file locations
 Surface data file - `/lcrc/group/acme/ccsm-data/inputdata/lnd/clm2/surfdata_map/` 
