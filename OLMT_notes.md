@@ -139,8 +139,8 @@ sbatch --dependency=afterok:459040 scripts/20210615_corn_soybean/ensemble_run_20
 
 
 ### Surface data set creation using CropUQ_pftdata.txt file
-* Sum of `PCT\_CFT` and `PCT\_NAT\_PFT` should always be 1. 
-* Turn natural vegetation or crops on or off using `PCT\_NATVEG` and `PCT\_CROP`.
+* Sum of `PCT_CFT` and `PCT_NAT_PFT` should always be 1. 
+* Turn natural vegetation or crops on or off using `PCT_NATVEG` and `PCT_CROP`.
 * When creating surfdata for a single grid using _pftdata.txt file be careful about using pft 0 - there could be more than one value for pft 0 and the later value will override the earlier values.
 
 
