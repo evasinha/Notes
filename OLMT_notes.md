@@ -1,10 +1,5 @@
 # Running OLMT
 
-# Table of Contents
-1. [Helpful weblinks](###Helpful weblinks)
-2. [Submitting job using OLMT](###Submitting job using OLMT)
-3. [Testing single simulation with no Uncertainty Quantification](###Testing single simulation with no Uncertainty Quantification)
-
 
 ### Helpful weblinks
 * [ELM-crop uncertainty analysis](https://docs.google.com/document/d/1fBuvgCtB5vBeupfS9FJaxWth4N7e4sp-INebl5W-Y0A/edit) 
