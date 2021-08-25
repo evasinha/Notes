@@ -82,7 +82,7 @@ python site_fullrun.py --site ${SITE} --crop --caseidprefix ${CASEID} \
 --ng 400 --parm_list ${PARM_FILE} --sitegroup ${SITEGROUP} \
 --mc_ensemble ${NSAMPLES} --postproc_file postproc_vars_crop
 ```
-Note that `--nopftdyn` option is not used in the command above.
+Note that `--nopftdyn` option is not used in the above command.
 
 
 ### Notes about OLMT:
@@ -108,8 +108,10 @@ Note that `--nopftdyn` option is not used in the command above.
 	```
 	
 ### Post-processing for ensemble runs:
-* The postproc_vars file (`20200428_soybean_USpostproc_vars_crop`) lists the variables for which the post processing is performed as well as the period over which the variables should be averaged. 
+* Postprocessing of the output is performed automatically based on informatin in file `~/OLMT/postproc_vars_crop`
+* This file lists the variables for which the post processing is performed, the period over which the variables should be averaged, and units for conversion. 
 * The post processing is only applied to the transient case in the full run.
+* The post-processed output is located in: `~/OLMT/UQ_output/<caseid>`
 * The post-processed output file (`20200428_soybean_US-Bo1_ICBCLM45CNCROP_trans_postprocessed.txt`) contains `n*m` matrix of outputs where n is the number of post processing variables listed in postproc_vars file and m is the number of samples in the ensemble.
 * `ytrain.dat` has the 80% of the post-processed output file data and `yval.dat` has the remaining 20%.
 * `ptrain.dat` has the 80% of the input parameter data and `pval.dat` has the remaining 20%.
@@ -123,12 +125,6 @@ CropUQ_sitedata.txt    (location, years of data)
 CropUQ_soildata.txt    (soil texture information)
 CropUQ_pftdata.txt     (PFT information)
 ```
-
-* CASE directory is created in: `~/wrk/E3SM_SFA/E3SM/cime/scripts/20200428_soybean_US-Bo1_I1850CLM45CNCROP_ad_spinup`
-* CASE exeroot is created in: `/compyfs/sinh210/e3sm_scratch/20200428_soybean_US-Bo1_I1850CLM45CNCROP_ad_spinup/bld`
-* CASE rundir is created in: `/compyfs/sinh210/e3sm_scratch/20200428_soybean_US-Bo1_I1850CLM45CNCROP_ad_spinup/run`
-* Postprocessing of the output is performed automatically following the file `~/wrk/E3SM_SFA/OLMT/postproc_vars_crop`.  You can change the variable names, time ranges for averaging and the unit conversions in that file.
-* Output will be located here: `~/wrk/E3SM_SFA/OLMT/UQ_output/<case>` 
 
 
 ### Running jobs in batch
