@@ -1,9 +1,9 @@
 # Running OLMT
 
 # Table of Contents
-1. [Helpful weblinks](#Helpful weblinks)
-2. [Submitting job using OLMT](#Submitting job using OLMT)
-3. [Testing single simulation with no Uncertainty Quantification](#Testing single simulation with no Uncertainty Quantification)
+1. [Helpful weblinks](###Helpful weblinks)
+2. [Submitting job using OLMT](###Submitting job using OLMT)
+3. [Testing single simulation with no Uncertainty Quantification](###Testing single simulation with no Uncertainty Quantification)
 
 
 ### Helpful weblinks
