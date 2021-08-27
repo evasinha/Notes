@@ -54,6 +54,7 @@ export UQTK_INS=/home/userid/UQTk-install
 	* `prange.dat`   :   `d x 2` Parameter physical ranges
 	* `pnames.txt`   :   `d x 1` List of parameter names
 	* `outnames.txt` :   `L x 1` List of output names
+	* Note - 365 is used in my examples since I am calibrating daily values. Replace 365 with 12 if calibrating monthly values.
 
 ### 3.1 UQTk steps in `workflow.x`:
 
