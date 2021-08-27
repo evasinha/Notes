@@ -90,7 +90,7 @@ export UQTK_INS=/home/userid/UQTk-install
 * **Step 2b**: Select observational/experimental data and run inference (preparing and running calibration). 
 	* `fixindnom.dat` - this file should contain ids of parameters that should be fixed at the nominal values. All other parameters are calibrated. So for example, if there are total of 18 parameters but we want to calibrate only five of them (5, 12,13, 15, 16 (counting from 0)). Then `fixindnom.dat` should look like:
 
-		```
+```
 0 0.0
 1 0.0
 2 0.0
@@ -104,7 +104,7 @@ export UQTK_INS=/home/userid/UQTk-install
 11 0.0
 14 0.0
 17 0.0
-		```
+```
 		
 * **Step 2c**: Sample plotting, relying on outputs of model inference. Main outputs:
 	* `fit_shade.eps`
