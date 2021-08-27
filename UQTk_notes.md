@@ -58,6 +58,8 @@ export UQTK_INS=/home/userid/UQTk-install
 
 ### 3.1 UQTk steps in `workflow.x`:
 
+* File location: `UQTk/examples/iuq/workflow.x`
+
 * **Step 1a**: Prepare ensemble of model simulations.
 
 * **Step 1b**: Build surrogates for each output given ensemble of simulations. Output:
