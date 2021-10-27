@@ -99,12 +99,12 @@ Note that `--nopftdyn` option is not used in the above command.
 * The coupler bypass crop compset (`ICBELMCNCROP`) does not exist in the default ELM directory. Follow the steps for copying `config_compsets.xml` and `config_machines.xml` to respective directory in ELM folder:
 	* Compy:
 	```
-	cp /qfs/people/ricc364/models/ELM_crop/E3SM/components/clm/cime_config/config_compsets.xml ./components/clm/cime_config/
+	cp /qfs/people/ricc364/models/ELM_crop/E3SM/components/clm/cime_config/config_compsets.xml ./components/elm/cime_config/
 	cp /qfs/people/ricc364/models/clean/E3SM/cime/config/e3sm/machines/config_machines.xml ./cime_config/machines/
 	```
 	* Anvil:
 	```
-	cp /home/ac.ricciuto/models/ELM_crop/E3SM/components/clm/cime_config/config_compsets.xml ./components/clm/cime_config/
+	cp /home/ac.ricciuto/models/ELM_crop/E3SM/components/clm/cime_config/config_compsets.xml ./components/elm/cime_config/
 	cp /home/ac.ricciuto/models/ELM_crop/E3SM/cime/config/e3sm/machines/config_machines.xml ./cime_config/machines/
 	```
 	
