@@ -95,18 +95,6 @@ def apply_cropwts_cft(lu_ts, yr_start, yr_end, output_reshape):
     # Masking regions with crop area <0.5%
     cropwtsmask = cropwts.where(cropwts>0.005)
 
-    # Plotting multiple DataArrays in a Dataset
-    da_plot = cropwtsmask.isel(time=150, cft=[2, 8])
-
-    # Replace zero values with nan
-    da_plot.values[da_plot.values == 0] = np.nan
-
-    subplot_titles = ['Corn','Soybean']
-    cmap_col = 'jet'
-
-    facet_plot_US(da_plot, subplot_titles, colplot='cft', colwrap=1, cmap_col=cmap_col, cbar_label='Crop weight mask [unitless]', 
-                  fig_wt=11, fig_ht=14, fig_extent=fig_extent, show_states=True, fname='cropwtsmask_US_Midwest_corn_soybean.png')
-
     # Renaming dimensions
     cropwtsmask = cropwtsmask.rename({'time':'years', 'cft':'pft', 'lsmlat':'lat', 'lsmlon':'lon'})
 
