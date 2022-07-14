@@ -88,6 +88,7 @@ mksrf_fvegtyp  = '/qfs/people/sinh210/wrk/user_inputdata/lnd/clm2/surfdata_map/m
 	
 mksrf_flai     = '/qfs/people/sinh210/wrk/user_inputdata/lnd/clm2/surfdata_map/mksrf_lai34cft_simyr2000_c200622.nc'
 ```
+* The two files listed above were provided by Beth Drewniak (September, 2020).
 
 ### 6. Create the surface dataset:
 * `./mksurfdata_map < namelist_360x720cru_2000`
