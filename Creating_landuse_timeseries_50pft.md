@@ -77,4 +77,4 @@ The following landuse timeseries files were generated and saved on compy (`/comp
 32			 | poplar			 | -	 | - |
 33			 | irrigated\_poplar		| - | - |
 34			 | willow		 | -			 | - |
-35			 | irrigated\_willow		 | - | - |
+35			 | irrigated\_willow		 | - | - |w
